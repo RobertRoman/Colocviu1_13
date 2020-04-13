@@ -2,10 +2,13 @@ package ro.pub.cs.systems.eim.colocviu1_13;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 public class Colocviu1_13MainActivity extends AppCompatActivity {
 
@@ -14,13 +17,14 @@ public class Colocviu1_13MainActivity extends AppCompatActivity {
 
     private String cardnialsClicked = "cardinalsClicked";
     private Integer buttonsClicked = 0;
+    private int SECONDARY_ACTIVITY_REQUEST_CODE = 1;
 
     private ButtonClickListener buttonClickListener = new ButtonClickListener();
     private class ButtonClickListener implements View.OnClickListener {
         @Override
         public void onClick(View view) {
             String tmp = cardinalPoints.getText().toString();
-            if (!tmp.isEmpty()) {
+            if (!tmp.isEmpty() && view.getId() != R.id.secondary_activity) {
                 tmp = tmp.concat(",");
             }
 
@@ -40,6 +44,11 @@ public class Colocviu1_13MainActivity extends AppCompatActivity {
                 case R.id.west:
                     tmp = tmp.concat(westBtn.getText().toString());
                     buttonsClicked++;
+                    break;
+                case R.id.secondary_activity:
+                    Intent intent = new Intent(getApplicationContext(), Colocviu1_13SecondaryActivity.class);
+                    intent.putExtra(cardnialsClicked, buttonsClicked.toString());
+                    startActivityForResult(intent, SECONDARY_ACTIVITY_REQUEST_CODE);
                     break;
             }
 
@@ -82,4 +91,15 @@ public class Colocviu1_13MainActivity extends AppCompatActivity {
         cardinalPoints.setText(savedInstanceState.getString(cardnialsClicked));
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent intent) {
+        super.onActivityResult(requestCode, resultCode, intent);
+        if (requestCode == SECONDARY_ACTIVITY_REQUEST_CODE) {
+            if (resultCode == Activity.RESULT_OK) {
+                Toast.makeText(this, "Registered!", Toast.LENGTH_LONG).show();
+            } else if (resultCode == Activity.RESULT_CANCELED) {
+                Toast.makeText(this, "Canceled!", Toast.LENGTH_LONG).show();
+            }
+        }
+    }
 }
