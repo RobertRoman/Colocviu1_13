@@ -23,8 +23,6 @@ public class Colocviu1_13MainActivity extends AppCompatActivity {
     private Integer buttonsClicked = 0;
     private int SECONDARY_ACTIVITY_REQUEST_CODE = 1;
 
-    private IntentFilter intentFilter = new IntentFilter();
-
     private boolean once = true;
 
     private ButtonClickListener buttonClickListener = new ButtonClickListener();
@@ -136,7 +134,7 @@ public class Colocviu1_13MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        registerReceiver(messageBroadcastReceiver, intentFilter);
+        registerReceiver(messageBroadcastReceiver , new IntentFilter("BROADCAST_ACTION"));
     }
 
     @Override

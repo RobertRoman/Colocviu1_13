@@ -28,6 +28,7 @@ public class ProcessingThread extends Thread {
 
     private void sendMessage() {
         Intent intent = new Intent();
+        intent.setAction("BROADCAST_ACTION");
         intent.putExtra("BROADCAST_RECEIVER_EXTRA",
                 new Date(System.currentTimeMillis()) + " " + cardinalPoints);
         context.sendBroadcast(intent);
