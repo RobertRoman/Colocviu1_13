@@ -19,6 +19,8 @@ public class Colocviu1_13MainActivity extends AppCompatActivity {
     private Integer buttonsClicked = 0;
     private int SECONDARY_ACTIVITY_REQUEST_CODE = 1;
 
+    private boolean once = true;
+
     private ButtonClickListener buttonClickListener = new ButtonClickListener();
     private class ButtonClickListener implements View.OnClickListener {
         @Override
@@ -51,6 +53,17 @@ public class Colocviu1_13MainActivity extends AppCompatActivity {
                     startActivityForResult(intent, SECONDARY_ACTIVITY_REQUEST_CODE);
                     break;
             }
+            // for excercise D
+            if (buttonsClicked >= 4) {
+                if (once) {
+                    once = false;
+
+                    Intent serviceIntent = new Intent(getApplicationContext(), Colocviu1_13Service.class);
+                    serviceIntent.putExtra(cardnialsClicked, tmp);
+                    getApplicationContext().startService(serviceIntent);
+
+                }
+            }
 
             cardinalPoints.setText(tmp);
         }
@@ -78,6 +91,7 @@ public class Colocviu1_13MainActivity extends AppCompatActivity {
         if (savedInstanceState != null) {
             cardinalPoints.setText(savedInstanceState.getString(cardnialsClicked));
         }
+
     }
 
     @Override
@@ -101,5 +115,12 @@ public class Colocviu1_13MainActivity extends AppCompatActivity {
                 Toast.makeText(this, "Canceled!", Toast.LENGTH_LONG).show();
             }
         }
+    }
+
+    @Override
+    protected void onDestroy() {
+        Intent intent = new Intent(this, Colocviu1_13Service.class);
+        stopService(intent);
+        super.onDestroy();
     }
 }
