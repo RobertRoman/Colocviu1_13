@@ -3,8 +3,12 @@ package ro.pub.cs.systems.eim.colocviu1_13;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Activity;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -18,6 +22,8 @@ public class Colocviu1_13MainActivity extends AppCompatActivity {
     private String cardnialsClicked = "cardinalsClicked";
     private Integer buttonsClicked = 0;
     private int SECONDARY_ACTIVITY_REQUEST_CODE = 1;
+
+    private IntentFilter intentFilter = new IntentFilter();
 
     private boolean once = true;
 
@@ -122,5 +128,20 @@ public class Colocviu1_13MainActivity extends AppCompatActivity {
         Intent intent = new Intent(this, Colocviu1_13Service.class);
         stopService(intent);
         super.onDestroy();
+    }
+
+    private MessageBroadcastReceiver messageBroadcastReceiver = new MessageBroadcastReceiver();
+
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        registerReceiver(messageBroadcastReceiver, intentFilter);
+    }
+
+    @Override
+    protected void onPause() {
+        unregisterReceiver(messageBroadcastReceiver);
+        super.onPause();
     }
 }
