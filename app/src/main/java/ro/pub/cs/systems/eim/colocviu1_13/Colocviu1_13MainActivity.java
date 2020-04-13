@@ -12,6 +12,9 @@ public class Colocviu1_13MainActivity extends AppCompatActivity {
     private EditText cardinalPoints;
     private Button northBtn, eastBtn, southBtn, westBtn, secondActivity;
 
+    private String cardnialsClicked = "cardinalsClicked";
+    private Integer buttonsClicked = 0;
+
     private ButtonClickListener buttonClickListener = new ButtonClickListener();
     private class ButtonClickListener implements View.OnClickListener {
         @Override
@@ -23,16 +26,20 @@ public class Colocviu1_13MainActivity extends AppCompatActivity {
 
             switch(view.getId()) {
                 case R.id.north:
-                    tmp = tmp.concat("North");
+                    tmp = tmp.concat(northBtn.getText().toString());
+                    buttonsClicked++;
                     break;
                 case R.id.east:
-                    tmp = tmp.concat("East");
+                    tmp = tmp.concat(eastBtn.getText().toString());
+                    buttonsClicked++;
                     break;
                 case R.id.south:
-                    tmp = tmp.concat("South");
+                    tmp = tmp.concat(southBtn.getText().toString());
+                    buttonsClicked++;
                     break;
                 case R.id.west:
-                    tmp = tmp.concat("West");
+                    tmp = tmp.concat(westBtn.getText().toString());
+                    buttonsClicked++;
                     break;
             }
 
@@ -58,5 +65,21 @@ public class Colocviu1_13MainActivity extends AppCompatActivity {
         southBtn.setOnClickListener(buttonClickListener);
         westBtn.setOnClickListener(buttonClickListener);
         secondActivity.setOnClickListener(buttonClickListener);
+
+        if (savedInstanceState != null) {
+            cardinalPoints.setText(savedInstanceState.getString(cardnialsClicked));
+        }
     }
+
+    @Override
+    protected void onSaveInstanceState(Bundle savedInstanceState) {
+        super.onSaveInstanceState(savedInstanceState);
+        savedInstanceState.putString(cardnialsClicked, String.valueOf(buttonsClicked));
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        cardinalPoints.setText(savedInstanceState.getString(cardnialsClicked));
+    }
+
 }
